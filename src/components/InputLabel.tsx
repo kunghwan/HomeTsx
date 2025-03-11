@@ -21,7 +21,7 @@ export const Input = (props: InputType) => {
   return (
     <input
       {...props}
-      className={twMerge("border text-gray-400 rounded", props?.className)}
+      className={twMerge(" border text-gray-400 rounded", props?.className)}
     />
   );
 };

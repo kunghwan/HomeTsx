@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@layer base {
+  h1 {
+    @apply font-bold text-3xl;
+  }
+
+  input {
+    @apply p-2.5;
+  }
+  /* 다크 모드 배경 색상 */
+  body {
+    @apply sm:bg-red-50 md:bg-yellow-50 lg:bg-green-50 xl:bg-blue-50;
+  }
+}
+
+@layer utilities {
+  .fse {
+    @apply bg-blue-400;
+  }
+
+  /* 다크 모드에서의 스타일 */
+  .dark body {
+    @apply bg-gray-800 text-white;
+  }
+  .div-con {
+    @apply flex gap-2 mt-2;
+  }
+  div-ch {
+    @apply flex mx-auto h-100 justify-center flex-col;
+  }
+}

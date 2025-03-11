@@ -7,5 +7,8 @@ type container = React.DetailedHTMLProps<
 >;
 
 export const Row = (props: container) => {
-  return <div {...props} className={twMerge("flex", props?.className)}></div>;
+  return <div {...props} className={twMerge("div-ch", props?.className)} />;
+};
+export const Noraml = (props: container) => {
+  return <div {...props} className="div-con" />;
 };

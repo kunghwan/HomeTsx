@@ -1,12 +1,19 @@
-import React from "react";
 import { Person } from "./Afd";
 
-const PersonCard: React.FC<{ person: Person }> = ({ person }) => {
+interface PersonCardProps {
+  person: Person;
+}
+
+const PersonCard = ({ person }: PersonCardProps) => {
   return (
-    <div className="person-card">
+    <div className="dark:bg-black border">
       <p>Name: {person.name}</p>
       <p>Age: {person.age}</p>
       <p>Gender: {person.gender ? "Male" : "Female"}</p>
+      <div>
+        <button className="buttonst">삭제</button>
+        <button className="bg-bg">수정</button>
+      </div>
     </div>
   );
 };

@@ -1,1 +1,21 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@layer {
+  button {
+    @apply border;
+  }
+  body {
+    @apply dark:bg-darkBg;
+  }
+}
+
+@layer components {
+  .buttonst {
+    background: rebeccapurple;
+  }
+}
+
+@theme {
+  --color-darkBg: var(--color-zinc-900);
+  --color-bg: var(--color-red-500);
+}

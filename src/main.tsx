@@ -3,10 +3,12 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import Person from "./0313실험/Person";
+import Silder from "./슬라이드쇼 실험/Silder";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
-    <Person />
+    {/* <Person /> */}
+    <Silder />
   </StrictMode>
 );

@@ -1,0 +1,30 @@
+/* 슬라이드 컨테이너 스타일 */
+.slider-container {
+  width: 50%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 커스텀 화살표 스타일 */
+.slick-prev,
+.slick-next {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  color: white;
+  padding: 10px;
+  z-index: 1;
+  position: absolute;
+}
+.slick-prev {
+  left: 70%;
+}
+
+.slick-next {
+  left: 95%;
+}
+
+/* 화살표 버튼 활성화 시 */
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

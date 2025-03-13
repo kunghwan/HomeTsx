@@ -1,15 +1,20 @@
-import { people } from "./Afd"; // types.ts에서 import
-import PersonCard from "../0313실험/PersonCard";
-
-// PersonCard 컴포넌트 정의
+import { useState } from "react";
+import { people } from "./Afd";
+import PersonCard from "./PersonCard";
+import { IoMoon, IoSunnySharp } from "react-icons/io5";
 
 const Person = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
   return (
-    <div className="border p-2.5">
-      <h1>People List</h1>
-      <div>
-        {people.map((person, index) => (
-          <PersonCard key={index} person={person} />
+    <div>
+      <h1>personlist</h1>
+      <button onClick={() => document.body.classList.toggle("dark")}>
+        {darkMode ? <IoMoon /> : <IoSunnySharp />}
+      </button>
+      <div className="border p-2.5 flex flex-col gap-y-2.5">
+        {people.map((p, i) => (
+          <PersonCard key={i} person={p} />
         ))}
       </div>
     </div>

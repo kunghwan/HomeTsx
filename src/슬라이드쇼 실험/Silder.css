@@ -1,30 +1,39 @@
 /* 슬라이드 컨테이너 스타일 */
 .slider-container {
-  width: 50%;
-  margin: 0 auto;
   position: relative;
+  width: 80%;
+  margin: auto;
 }
 
-/* 커스텀 화살표 스타일 */
+/* 좌측 및 우측 화살표 버튼 스타일 */
 .slick-prev,
 .slick-next {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  color: white;
-  padding: 10px;
-  z-index: 1;
   position: absolute;
+  bottom: 50px; /* 하단에 배치 */
+  transform: translateY(0); /* 수직 중앙 정렬을 위한 변환 */
+  font-size: 30px;
+  color: black;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
+
 .slick-prev {
-  left: 70%;
+  left: 10px; /* 왼쪽 화살표 위치 */
 }
 
 .slick-next {
-  left: 95%;
+  right: 10px; /* 오른쪽 화살표 위치 */
 }
 
-/* 화살표 버튼 활성화 시 */
-.slick-prev:hover,
-.slick-next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+/* 페이지네이션 점 (dots) 위치 및 스타일 */
+.slick-dots {
+  position: absolute;
+  bottom: 10px; /* 슬라이드 하단에 위치 */
+  width: 100%;
+  text-align: center;
+}
+
+.slick-dots li button:before {
+  color: black; /* 페이지네이션 점 색상 */
 }

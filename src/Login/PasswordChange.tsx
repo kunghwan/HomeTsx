@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // React와 useState를 임포트
+import React, { useState, useCallback, useMemo } from "react"; // React와 useState, useCallback, useMemo 임포트
 import { auth } from "../context/firebase.config"; // Firebase 인증을 가져옵니다.
 import {
   reauthenticateWithCredential, // 재인증을 위한 Firebase 함수
@@ -19,56 +19,66 @@ const PasswordChange = () => {
   // useNavigate 훅을 사용하여 홈으로 리디렉션하기 위해 선언
   const navigate = useNavigate();
 
-  // 폼 제출 처리 함수
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // 기본 동작인 폼 제출을 막음
-
-    // 필수 값 체크: 이메일, 현재 비밀번호, 새 비밀번호 모두 입력되어야 함
+  // 필수 값 체크 및 에러 메시지 설정을 useMemo로 메모이제이션
+  const errorMessage = useMemo(() => {
     if (!user.email || !user.password || !user.newPassword) {
-      setUser((prev) => ({ ...prev, error: "모든 필드를 채워야 합니다." }));
-      return; // 필드가 비어 있으면 함수 종료
+      return "모든 필드를 채워야 합니다.";
     }
+    return "";
+  }, [user.email, user.password, user.newPassword]);
 
-    try {
-      // Firebase에서 현재 로그인된 사용자 가져오기
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        setUser((prev) => ({ ...prev, error: "로그인된 사용자 없음" }));
-        return; // 로그인된 사용자가 없으면 에러 메시지 설정 후 종료
+  // 폼 제출 처리 함수
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault(); // 기본 동작인 폼 제출을 막음
+
+      if (errorMessage) {
+        setUser((prev) => ({ ...prev, error: errorMessage }));
+        return; // 필드가 비어 있으면 함수 종료
       }
 
-      // 사용자가 입력한 이메일과 비밀번호를 사용하여 인증 자격 증명 생성
-      const credential = EmailAuthProvider.credential(
-        user.email,
-        user.password
-      );
+      try {
+        // Firebase에서 현재 로그인된 사용자 가져오기
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          setUser((prev) => ({ ...prev, error: "로그인된 사용자 없음" }));
+          return; // 로그인된 사용자가 없으면 에러 메시지 설정 후 종료
+        }
 
-      // 재인증: 사용자에게 재인증을 요구하여 비밀번호 변경을 처리하도록 함
-      await reauthenticateWithCredential(currentUser, credential);
+        // 사용자가 입력한 이메일과 비밀번호를 사용하여 인증 자격 증명 생성
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          user.password
+        );
 
-      // 비밀번호 변경: 새 비밀번호로 변경
-      await updatePassword(currentUser, user.newPassword);
+        // 재인증: 사용자에게 재인증을 요구하여 비밀번호 변경을 처리하도록 함
+        await reauthenticateWithCredential(currentUser, credential);
 
-      // 성공적인 비밀번호 변경 후 상태 업데이트 (성공 메시지 표시)
-      setUser((prev) => ({
-        ...prev,
-        success: "비밀번호가 성공적으로 변경되었습니다!",
-        error: "",
-      }));
+        // 비밀번호 변경: 새 비밀번호로 변경
+        await updatePassword(currentUser, user.newPassword);
 
-      // 비밀번호 변경 후 2초 뒤에 홈으로 리디렉션
-      setTimeout(() => {
-        navigate("/"); // 홈 페이지로 이동
-      }, 2000); // 2초 후에 리디렉션
-    } catch (err: any) {
-      // 오류 발생 시 에러 메시지 설정
-      setUser((prev) => ({
-        ...prev,
-        error: "비밀번호 변경 실패: " + err.message,
-        success: "",
-      }));
-    }
-  };
+        // 성공적인 비밀번호 변경 후 상태 업데이트 (성공 메시지 표시)
+        setUser((prev) => ({
+          ...prev,
+          success: "비밀번호가 성공적으로 변경되었습니다!",
+          error: "",
+        }));
+
+        // 비밀번호 변경 후 2초 뒤에 홈으로 리디렉션
+        setTimeout(() => {
+          navigate("/"); // 홈 페이지로 이동
+        }, 2000); // 2초 후에 리디렉션
+      } catch (err: any) {
+        // 오류 발생 시 에러 메시지 설정
+        setUser((prev) => ({
+          ...prev,
+          error: "비밀번호 변경 실패: " + err.message,
+          success: "",
+        }));
+      }
+    },
+    [errorMessage, user.email, user.password, user.newPassword, navigate]
+  );
 
   return (
     <div>

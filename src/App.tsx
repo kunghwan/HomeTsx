@@ -1,20 +1,85 @@
-import React, { useState, useImperativeHandle, forwardRef } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FormEvent, useCallback, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "./context/firebase.config";
 
-// forwardRef로 ref를 전달받을 수 있게 합니다.
-const Child = forwardRef((props, ref) => {
-  const [count, setCount] = useState(0);
+const App = () => {
+  const [email, setEmail] = useState(import.meta.env.DEV ? "" : "1");
 
-  // useImperativeHandle을 사용하여 부모 컴포넌트가 호출할 수 있는 메서드를 정의합니다.
-  useImperativeHandle(ref, () => ({
-    resetCount: () => setCount(0),
-    incrementCount: () => setCount((prev) => prev + 1),
-  }));
+  const [password, setPassword] = useState(import.meta.env.DEV ? "" : "1");
+
+  const [error, setError] = useState("");
+
+  const navi = useNavigate();
+
+  const IdRef = useRef<HTMLInputElement>(null);
+  const PasswordRef = useRef<HTMLInputElement>(null);
+
+  const onSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      if (email.length === 0) {
+        alert("아이디를 입력해줘");
+        IdRef.current?.focus();
+        return;
+      }
+      if (password.length === 0) {
+        alert("비밀번호를 입력해줘");
+        PasswordRef.current?.focus();
+        return;
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const user = userCredential.user;
+        console.log("로그인 성공", user);
+        alert("성공!");
+        navi("/signin");
+      } catch (err: any) {
+        setError("로그인 실패" + err.message);
+      }
+    },
+    [IdRef, email, password, PasswordRef, navi]
+  );
 
   return (
-    <div>
-      <p>Count: {count}</p>
-    </div>
+    <>
+      <form
+        className=" flex flex-col w-50 mx-auto items-center justify-center h-100 gap-y-2.5"
+        onSubmit={onSubmit}
+      >
+        <div>
+          <label htmlFor="id">아이디</label>
+          <input
+            type="text"
+            placeholder="example@naver.com"
+            ref={IdRef}
+            id="id"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">비밀번호</label>
+          <input
+            type="password"
+            placeholder="******************"
+            ref={PasswordRef}
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {error && <p>실패</p>}
+        <button className=" w-100 mt-8 ">로그인</button>
+      </form>
+    </>
   );
-});
+};
 
-export default Child;
+export default App;

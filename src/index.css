@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@layer base {
+  input {
+    @apply bg-yellow-200 rounded p-2.5 w-100;
+  }
+  label {
+    @apply text-xl text-blue-300;
+  }
+  button {
+    @apply p-2.5 rounded bg-amber-400 text-blue-50 cursor-pointer;
+  }
+}

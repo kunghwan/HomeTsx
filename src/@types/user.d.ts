@@ -7,3 +7,14 @@ interface User {
   error?: string;
   success?: string;
 }
+
+interface Loading {
+  error: string;
+  loading: boolean;
+  data: DataItem;
+}
+
+interface DataItem {
+  id: string;
+  name: string;
+}

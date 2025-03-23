@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   input {
     @apply bg-yellow-200 rounded p-2.5 w-100;

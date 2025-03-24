@@ -1,9 +1,7 @@
+import { Link } from "react-router-dom";
+
 const StudentItem = () => {
-  return (
-    <div>
-      <input type="text" />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default StudentItem;

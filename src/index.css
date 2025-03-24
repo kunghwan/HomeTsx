@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-theme: var(--color-sky-500);
+  --color-gray: var(--color-gray-200);
+  --color-darkColor: var(--color-zinc-700);
+}
+
+@layer {
+  input {
+    @apply rounded p-2 w-80 bg-gray-50 focus:border focus:border-theme outline-none;
+  }
+  body {
+    @apply dark:bg-darkColor dark:text-gray;
+  }
+  button {
+    @apply text-white p-2.5 text-xl rounded bg-sky-500 cursor-pointer;
+  }
+  button.dark {
+    @apply bg-gray border;
+  }
+}

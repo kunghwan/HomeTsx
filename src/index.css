@@ -8,7 +8,7 @@
   --color-darkColor: var(--color-zinc-700);
 }
 
-@layer {
+@layer base {
   input {
     @apply rounded p-2 w-80 bg-gray-50 focus:border focus:border-theme outline-none;
   }

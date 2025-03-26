@@ -1,63 +1,74 @@
-import { Link, Outlet } from "react-router-dom";
 import { AmazonePicture } from "./layoutUrl";
-import { IoBasket, IoMenu, IoMoon, IoSearch, IoSunny } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { IoMenu, IoMoon, IoSearch, IoSunny } from "react-icons/io5";
 import { useState } from "react";
-import { twMerge } from "tailwind-merge";
 import RootNavbar from "./RootNavbar";
 
 const Layout = () => {
-  const [isMenu, setIsMenu] = useState(false);
-  const [darkMode, setDarkMode] = useState(document.body.className === "dark");
+  const [lightBlack, setLightBlack] = useState(
+    document.body.className === "dark"
+  );
 
-  const [scroll, setScroll] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const menuHandler = () => {
+    setIsMenuOpen(false);
+  };
   return (
-    <div
-      className={twMerge(
-        "flex items-center gap-x-1 ",
-        scroll >= 100 && "fixed top-0 left-0 w-full z-10"
-      )}
-    >
-      <Link to={"/"} className="hover:shadow-md">
-        <img src={AmazonePicture} alt="" className="h-15 w-30 " />
-      </Link>
-      <form
-        action=""
-        className="flex items-center gap-x-2 "
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <input type="text" className="" />
-        <div className=" flex gap-x-2">
-          <button>
-            <IoSearch />
-          </button>
-          <button
-            className="dark hover:scale-120 trasition dark:bg-black"
-            onClick={() => {
-              document.body.classList.toggle("dark");
-              setDarkMode((prev) => !prev);
-            }}
-          >
-            {darkMode ? (
-              <IoMoon className="text-amber-300" />
-            ) : (
-              <IoSunny className="text-red-400 " />
-            )}
-          </button>
-        </div>
-        <button className="md:hidden" onClick={() => setIsMenu(true)}>
-          <IoMenu />
-        </button>
+    <header className=" flex gap-x-2.5 items-center ">
+      {/* amazone 이미지 */}
+      <div className="mx-auto flex max-w-300 ">
+        <Link to={"/"}>
+          <img
+            src={AmazonePicture}
+            alt=""
+            className="h-20  hover:opacity-80 object-cover
+        "
+          />
+        </Link>
 
-        {isMenu && <RootNavbar />}
-        {/* <button className="md:hidden">
-          <IoBasket />
-        </button> */}
-      </form>
-      <Outlet />
-    </div>
+        {/* 검색창 */}
+        <form
+          className=" flex items-center gap-x-2.5 flex-1"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <input
+            type="text"
+            placeholder="검색어를 입력해 주세요"
+            className=""
+          />
+          <div className="flex gap-x-2.5  ">
+            <button>
+              <IoSearch />
+            </button>
+            <button
+              onClick={() => {
+                document.body.classList.toggle("dark");
+                setLightBlack((prev) => !prev);
+              }}
+              className="dark:bg-amber-300"
+            >
+              {lightBlack ? <IoMoon /> : <IoSunny />}
+            </button>
+            {/* 메뉴판 */}
+            <div>
+              <button
+                className="text-2xl w-10 bg-bg dark:bg-darkBorder md:hidden"
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+              >
+                <IoMenu />
+              </button>
+              <div className="hidden md:block">
+                <RootNavbar menuHandler={menuHandler} />
+              </div>
+              {isMenuOpen && <RootNavbar menuHandler={menuHandler} />}
+            </div>
+          </div>
+        </form>
+      </div>
+    </header>
   );
 };
 

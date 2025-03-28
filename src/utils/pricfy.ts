@@ -1,7 +1,7 @@
-export function pricfy(price: string | number, withDecimal: boolean): string {
+export function pricfy(price: string | number, withDecimal?: boolean): string {
   const copy = price.toString();
-  if (copy) {
-    return "숫자를 입력해주세요";
+  if (!copy) {
+    return "숫자를 입력해 주세요";
   }
 
   const regax = /^[0-9]+$/;

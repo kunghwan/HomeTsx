@@ -21,4 +21,7 @@
   button.dark {
     @apply bg-gray border;
   }
+  label {
+    @apply text-gray-400 text-sm;
+  }
 }

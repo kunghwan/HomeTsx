@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AmazonePicture } from "./layoutUrl";
 import { Link, Outlet } from "react-router-dom";
 import { IoMenu, IoMoon, IoSearch, IoSunny } from "react-icons/io5";
@@ -10,9 +10,21 @@ const Layout = () => {
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const [scroll, setScroll] = useState(0);
+
   const menuHandler = () => {
     setIsMenuOpen(!isMenuOpen); // 메뉴 상태 토글
   };
+
+  useEffect(() => {
+    const getScroll = () => setScroll(window.scrollY);
+
+    window.addEventListener("scroll", getScroll);
+
+    return () => {
+      window.removeEventListener("scroll", getScroll);
+    };
+  }, []);
 
   // 다크 모드 토글 함수
   const toggleTheme = () => {
@@ -22,7 +34,7 @@ const Layout = () => {
 
   return (
     <>
-      <header className="mx-auto flex items-center p-4 bg-white dark:bg-gray-900 border-b border-gray-200 justify-center">
+      <header className="mx-auto flex items-center p-4 bg-white dark:bg-gray-900 border-b border-gray-200 justify-center w-full">
         {/* 아마존 이미지 */}
         <Link to="/" className="flex-shrink-0">
           <img src={AmazonePicture} alt="Amazon" className="h-10 w-auto" />
@@ -33,7 +45,7 @@ const Layout = () => {
           <input
             type="text"
             placeholder="검색어를 입력해주세요"
-            className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+            className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700 md:w-80"
           />
         </div>
 
@@ -59,20 +71,38 @@ const Layout = () => {
           {/* 메뉴 버튼 */}
           <button
             onClick={menuHandler}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 "
           >
-            <IoMenu className="text-xl" />
+            <IoMenu className="text-xl " />
           </button>
         </div>
 
         {/* 모바일 메뉴 */}
-        {isMenuOpen && (
-          <RootNavbar menuHandler={menuHandler} isMenuOpen={isMenuOpen} />
-        )}
+
+        {isMenuOpen && <RootNavbar menuHandler={menuHandler} />}
+
+        {/* <div className="">
+          <RootNavbar menuHandler={menuHandler} />
+        </div> */}
       </header>
-      <main>
+      <main className="mx-auto max-w-300">
         <Outlet />
       </main>
+
+      {/* top버튼 */}
+      {scroll > 400 && (
+        <button
+          className="fixed bottom-0 right-0"
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+        >
+          top
+        </button>
+      )}
     </>
   );
 };

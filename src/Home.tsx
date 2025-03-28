@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
 const StudentItem = () => {
-  return <div></div>;
+  return <div>DSFSDF</div>;
 };
 
 export default StudentItem;

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AmazonePicture } from "./layoutUrl";
 import { Link, Outlet } from "react-router-dom";
 import { IoMenu, IoMoon, IoSearch, IoSunny } from "react-icons/io5";
 import RootNavbar from "./RootNavbar";
+import { twMerge } from "tailwind-merge";
+import { TextInputRef } from "../UI/input";
 
 const Layout = () => {
   const [lightBlack, setLightBlack] = useState(
@@ -26,6 +28,9 @@ const Layout = () => {
     };
   }, []);
 
+  const [keyword, setKeyword] = useState("");
+  const keywordRef = useRef<TextInputRef>;
+
   // 다크 모드 토글 함수
   const toggleTheme = () => {
     setLightBlack(!lightBlack);
@@ -34,7 +39,12 @@ const Layout = () => {
 
   return (
     <>
-      <header className="mx-auto flex items-center p-4 bg-white dark:bg-gray-900 border-b border-gray-200 justify-center w-full">
+      <header
+        className={twMerge(
+          "mx-auto flex items-center p-4 bg-white dark:bg-gray-900 border-b border-gray-200 justify-center w-full",
+          scroll >= 100 && "fixed"
+        )}
+      >
         {/* 아마존 이미지 */}
         <Link to="/" className="flex-shrink-0">
           <img src={AmazonePicture} alt="Amazon" className="h-10 w-auto" />
@@ -48,7 +58,6 @@ const Layout = () => {
             className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700 md:w-80"
           />
         </div>
-
         {/* 아이콘 및 버튼들 */}
         <div className="flex items-center gap-x-4">
           {/* 검색 버튼 */}
@@ -71,11 +80,13 @@ const Layout = () => {
           {/* 메뉴 버튼 */}
           <button
             onClick={menuHandler}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 "
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 sm:hidden "
           >
             <IoMenu className="text-xl " />
           </button>
         </div>
+
+        {/* 반응형 lg모드일때 그 pathname인 곳에 있는 이름 출력 */}
 
         {/* 모바일 메뉴 */}
 

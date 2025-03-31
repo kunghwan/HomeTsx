@@ -19,11 +19,13 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" Component={Layout}>
             <Route index Component={Home} />
-            <Route path="myinfo" Component={MyAccount} {...user} />
             <Route path="product">
               <Route index Component={Product} />
               <Route path=":pid" Component={ProductDetail} />
             </Route>
+            <Route path="myinfo" element={<MyAccount user={user} />} />
+
+            {user && <Route path="myinfo" element={<MyAccount {...user} />} />}
           </Route>
         </Routes>
       </BrowserRouter>

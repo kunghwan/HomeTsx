@@ -23,7 +23,7 @@ const AppRouter = () => {
               <Route index Component={Product} />
               <Route path=":pid" Component={ProductDetail} />
             </Route>
-            <Route path="myinfo" element={<MyAccount user={user} />} />
+            <Route path="myinfo" element={<MyAccount />} />
 
             {user && <Route path="myinfo" element={<MyAccount {...user} />} />}
           </Route>
